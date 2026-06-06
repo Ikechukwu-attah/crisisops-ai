@@ -107,18 +107,20 @@ export default function MemoryPage() {
             </button>
           </div>
 
-          {/* Memory type legend */}
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-3 mt-4 pt-4 border-t border-slate-700">
-            {MEMORY_TYPES.map((type) => {
-              const meta = MEMORY_TYPE_META[type];
-              return (
-                <div key={type} className="text-xs">
-                  <div className={`font-semibold mb-0.5 ${meta.color}`}>{meta.label}</div>
-                  <div className="text-slate-500">{meta.desc}</div>
-                </div>
-              );
-            })}
-          </div>
+          {/* Memory type legend — only show types that have records */}
+          {memories.length > 0 && (
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-3 mt-4 pt-4 border-t border-slate-700">
+              {MEMORY_TYPES.filter((type) => grouped[type]?.length > 0).map((type) => {
+                const meta = MEMORY_TYPE_META[type];
+                return (
+                  <div key={type} className="text-xs">
+                    <div className={`font-semibold mb-0.5 ${meta.color}`}>{meta.label}</div>
+                    <div className="text-slate-500">{meta.desc}</div>
+                  </div>
+                );
+              })}
+            </div>
+          )}
         </div>
 
         {/* Stats row */}

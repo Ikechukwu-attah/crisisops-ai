@@ -174,11 +174,16 @@ export default function ApprovalPanel({ incidentId, currentStatus, existingAppro
           </label>
           <input
             type="text"
-            className="w-full bg-slate-900 border border-slate-600 rounded-lg px-3 py-2.5 text-slate-200 text-sm focus:outline-none focus:border-blue-500"
+            className={`w-full bg-slate-900 border rounded-lg px-3 py-2.5 text-slate-200 text-sm focus:outline-none focus:border-blue-500 ${
+              decision && !operatorName.trim() ? "border-red-700" : "border-slate-600"
+            }`}
             placeholder="Your name or badge ID"
             value={operatorName}
-            onChange={(e) => setOperatorName(e.target.value)}
+            onChange={(e) => { setOperatorName(e.target.value); if (error) setError(""); }}
           />
+          {decision && !operatorName.trim() && (
+            <p className="text-red-400 text-xs mt-1">Required for audit compliance</p>
+          )}
         </div>
         <div>
           <label className="block text-slate-400 text-xs font-semibold uppercase tracking-wider mb-1">
@@ -198,7 +203,7 @@ export default function ApprovalPanel({ incidentId, currentStatus, existingAppro
 
       <button
         onClick={handleSubmit}
-        disabled={!decision || !operatorName.trim() || submitting}
+        disabled={!decision || submitting}
         className="w-full py-3.5 rounded-xl font-semibold text-sm transition-all disabled:opacity-50 disabled:cursor-not-allowed bg-red-600 hover:bg-red-500 text-white"
       >
         {submitting

@@ -20,7 +20,17 @@ export async function GET(
       return NextResponse.json({ error: "Not found" }, { status: 404 });
     }
 
-    return NextResponse.json(incident);
+    // Retroactively resolve ANALYSIS_FAILED for pre-fix incidents stored as PENDING_APPROVAL
+    const triage = incident.agentResults.find((r) => r.agentName === "triage");
+    let status = incident.status;
+    if (status === "PENDING_APPROVAL" && triage) {
+      try {
+        const parsed = JSON.parse(triage.outputJson);
+        if (parsed && typeof parsed === "object" && "error" in parsed) status = "ANALYSIS_FAILED";
+      } catch { /* keep status */ }
+    }
+
+    return NextResponse.json({ ...incident, status });
   } catch (err) {
     console.error("[API] incident get error:", err);
     return NextResponse.json({ error: String(err) }, { status: 500 });
