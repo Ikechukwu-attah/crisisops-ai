@@ -12,12 +12,17 @@ import ResourceRecommendationCard from "@/components/incidents/ResourceRecommend
 import PublicAlertDraft from "@/components/incidents/PublicAlertDraft";
 import ApprovalPanel from "@/components/incidents/ApprovalPanel";
 import AuditTimeline from "@/components/incidents/AuditTimeline";
+import { prisma } from "@/lib/db/prisma";
 
 async function getIncident(id: string) {
-  const base = process.env.NEXT_PUBLIC_BASE_URL ?? "http://localhost:3000";
-  const res = await fetch(`${base}/api/incidents/${id}`, { cache: "no-store" });
-  if (!res.ok) return null;
-  return res.json();
+  return prisma.incident.findUnique({
+    where: { id },
+    include: {
+      agentResults: { orderBy: { createdAt: "asc" } },
+      approvals: { orderBy: { createdAt: "desc" } },
+      auditLogs: { orderBy: { createdAt: "asc" } },
+    },
+  });
 }
 
 export default async function IncidentResultPage({ params }: { params: Promise<{ id: string }> }) {
@@ -30,7 +35,7 @@ export default async function IncidentResultPage({ params }: { params: Promise<{
 
   for (const ar of incident.agentResults ?? []) {
     try { agentResultMap[ar.agentName] = JSON.parse(ar.outputJson); } catch { agentResultMap[ar.agentName] = ar.outputJson; }
-    agentResultTimestamps[ar.agentName] = ar.createdAt;
+    agentResultTimestamps[ar.agentName] = ar.createdAt instanceof Date ? ar.createdAt.toISOString() : ar.createdAt;
   }
 
   const verification = agentResultMap["verification"] as Record<string, unknown> | undefined;
@@ -209,7 +214,7 @@ export default async function IncidentResultPage({ params }: { params: Promise<{
                 agentName={agentName}
                 outputJson={parsed}
                 confidence={ar.confidence}
-                storedAt={ar.createdAt}
+                storedAt={ar.createdAt instanceof Date ? ar.createdAt.toISOString() : ar.createdAt}
               />
             );
           })}
