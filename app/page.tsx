@@ -449,82 +449,31 @@ export default function LandingPage() {
         </div>
       </section>
 
-      {/* ─── Architecture ─── */}
+      {/* ─── Product Workflow ─── */}
       <section className="border-t border-slate-800">
         <div className="max-w-7xl mx-auto px-6 py-20 lg:py-28">
           <div className="text-center mb-14">
-            <div className="text-slate-500 text-xs font-semibold uppercase tracking-widest mb-4">Architecture</div>
-            <h2 className="text-3xl lg:text-4xl font-black tracking-tight">System design</h2>
+            <div className="text-slate-500 text-xs font-semibold uppercase tracking-widest mb-4">How It Works</div>
+            <h2 className="text-3xl lg:text-4xl font-black tracking-tight">From messy report to approved decision</h2>
+            <p className="text-slate-500 text-sm mt-3 max-w-md mx-auto">In under 60 seconds.</p>
           </div>
 
-          {/* Connected card architecture */}
-          <div className="flex flex-col items-center gap-0">
-            {/* Row 1 */}
-            <div className="bg-slate-800 border border-slate-700 rounded-xl px-6 py-3 text-sm font-semibold text-white">
-              Operator Browser
-            </div>
-            <div className="w-px h-6 bg-slate-700"></div>
-
-            {/* Row 2 */}
-            <div className="bg-slate-800 border border-slate-700 rounded-xl px-6 py-3 text-sm font-semibold text-white">
-              Next.js App Router · API Routes
-            </div>
-            <div className="w-px h-6 bg-slate-700"></div>
-
-            {/* Row 3 — horizontal */}
-            <div className="flex items-start gap-0">
-              <div className="flex flex-col items-center">
-                <div className="bg-slate-800 border border-slate-700 rounded-xl px-6 py-3 text-sm font-semibold text-white whitespace-nowrap">
-                  Prisma ORM · SQLite
-                </div>
-              </div>
-              <div className="flex items-center gap-0 mt-3">
-                <div className="w-8 h-px bg-slate-700"></div>
-                <div className="flex flex-col items-center">
-                  <div className="bg-blue-950 border border-blue-800 rounded-xl px-6 py-3 text-sm font-bold text-blue-300 whitespace-nowrap">
-                    Agent Orchestrator
-                  </div>
-                  <div className="w-px h-4 bg-slate-700"></div>
-                  <div className="bg-blue-950 border border-blue-800 rounded-xl px-6 py-3 text-sm font-semibold text-blue-400 whitespace-nowrap">
-                    Qwen Cloud · qwen-max ×7
-                  </div>
-                </div>
-                <div className="w-8 h-px bg-slate-700"></div>
-                <div className="bg-purple-950 border border-purple-800 rounded-xl px-6 py-3 text-sm font-semibold text-purple-300 whitespace-nowrap">
-                  Incident Memory
-                </div>
-              </div>
-            </div>
-            <div className="w-px h-6 bg-slate-700"></div>
-
-            {/* Row 4 */}
-            <div className="bg-slate-800 border border-slate-700 rounded-xl px-6 py-3 text-sm font-semibold text-white">
-              Zod Validated Structured Outputs
-            </div>
-            <div className="w-px h-6 bg-slate-700"></div>
-
-            {/* Row 5 — horizontal */}
-            <div className="flex items-center gap-4">
-              <div className="bg-green-950 border border-green-800 rounded-xl px-6 py-3 text-sm font-bold text-green-300">
-                Human Approval UI
-              </div>
-              <div className="w-6 h-px bg-slate-700"></div>
-              <div className="bg-yellow-950 border border-yellow-800 rounded-xl px-6 py-3 text-sm font-semibold text-yellow-300">
-                Append-only Audit Log
-              </div>
-            </div>
-          </div>
-
-          <div className="mt-12 grid grid-cols-2 md:grid-cols-4 gap-4">
+          <div className="flex flex-col sm:flex-row items-center justify-center gap-0">
             {[
-              { label: "Frontend", value: "Next.js 16 · App Router" },
-              { label: "AI", value: "Qwen Cloud · OpenAI SDK" },
-              { label: "Database", value: "SQLite · Prisma ORM" },
-              { label: "Validation", value: "Zod · all 7 agents" },
-            ].map((s) => (
-              <div key={s.label} className="bg-slate-900 border border-slate-800 rounded-xl p-4 text-center">
-                <div className="text-slate-500 text-xs font-semibold uppercase tracking-wider mb-1.5">{s.label}</div>
-                <div className="text-white text-sm font-semibold">{s.value}</div>
+              { label: "Incident Report", sub: "Raw field input", color: "bg-slate-800 border-slate-700 text-white", sub_color: "text-slate-500" },
+              { label: "7 Qwen Agents", sub: "qwen-max · sequential", color: "bg-blue-950 border-blue-800 text-blue-200", sub_color: "text-blue-500" },
+              { label: "Zod Validation", sub: "Structured output", color: "bg-slate-800 border-slate-700 text-white", sub_color: "text-slate-500" },
+              { label: "Human Approval", sub: "Operator decides", color: "bg-green-950 border-green-800 text-green-200", sub_color: "text-green-600" },
+              { label: "Audit Log", sub: "Full chain recorded", color: "bg-slate-800 border-slate-700 text-white", sub_color: "text-slate-500" },
+            ].map((step, i, arr) => (
+              <div key={step.label} className="flex flex-col sm:flex-row items-center">
+                <div className={`border rounded-2xl px-6 py-5 text-center ${step.color} min-w-[9rem]`}>
+                  <div className="font-bold text-sm leading-snug">{step.label}</div>
+                  <div className={`text-xs mt-1 ${step.sub_color}`}>{step.sub}</div>
+                </div>
+                {i < arr.length - 1 && (
+                  <div className="text-slate-600 text-xl font-light px-3 rotate-90 sm:rotate-0">›</div>
+                )}
               </div>
             ))}
           </div>
