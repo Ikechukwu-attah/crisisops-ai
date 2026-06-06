@@ -8,9 +8,13 @@
     "start": "next start"
   },
   "dependencies": {
+    "@prisma/client": "^6.19.3",
     "next": "16.2.7",
+    "openai": "^6.42.0",
+    "prisma": "^6.19.3",
     "react": "19.2.4",
-    "react-dom": "19.2.4"
+    "react-dom": "19.2.4",
+    "zod": "^4.4.3"
   },
   "devDependencies": {
     "@tailwindcss/postcss": "^4",

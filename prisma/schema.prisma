@@ -1,0 +1,67 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model Incident {
+  id              String   @id @default(cuid())
+  title           String?
+  rawReport       String
+  reporterName    String?
+  reporterContact String?
+  locationRaw     String?
+  incidentType    String?
+  severity        String?
+  urgency         String?
+  status          String   @default("ANALYZING")
+  confidence      Float?
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+  agentResults    AgentResult[]
+  approvals       Approval[]
+  auditLogs       AuditLog[]
+}
+
+model AgentResult {
+  id          String   @id @default(cuid())
+  incidentId  String
+  agentName   String
+  outputJson  String
+  confidence  Float?
+  createdAt   DateTime @default(now())
+  incident    Incident @relation(fields: [incidentId], references: [id])
+}
+
+model Approval {
+  id              String   @id @default(cuid())
+  incidentId      String
+  decision        String
+  operatorName    String?
+  editedPlanJson  String?
+  notes           String?
+  createdAt       DateTime @default(now())
+  incident        Incident @relation(fields: [incidentId], references: [id])
+}
+
+model AuditLog {
+  id          String   @id @default(cuid())
+  incidentId  String
+  action      String
+  detailsJson String?
+  createdAt   DateTime @default(now())
+  incident    Incident @relation(fields: [incidentId], references: [id])
+}
+
+model IncidentMemory {
+  id               String   @id @default(cuid())
+  memoryType       String
+  title            String
+  content          String
+  sourceIncidentId String?
+  tags             String
+  createdAt        DateTime @default(now())
+}
