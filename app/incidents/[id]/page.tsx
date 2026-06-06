@@ -54,6 +54,17 @@ export default async function IncidentResultPage({ params }: { params: Promise<{
       <Header title="Incident Analysis" subtitle={`Report #${id.slice(0, 12)} · Qwen Cloud · 7 Agents`} />
       <div className="p-6 max-w-4xl mx-auto space-y-6">
 
+        {/* Analysis failed banner */}
+        {incident.status === "ANALYSIS_FAILED" && (
+          <div className="bg-red-950 border border-red-800 rounded-xl px-5 py-4">
+            <div className="text-red-300 font-bold text-sm mb-1">Analysis Failed</div>
+            <p className="text-red-400 text-sm leading-relaxed">
+              The Triage Agent failed to process this report — likely an API key or network error.
+              All downstream agents were skipped. Check your Qwen API key and re-submit the report as a new incident.
+            </p>
+          </div>
+        )}
+
         {/* Summary */}
         <IncidentSummaryCard incident={incident} />
 
@@ -220,12 +231,14 @@ export default async function IncidentResultPage({ params }: { params: Promise<{
           })}
         </div>
 
-        {/* Approval Panel — always prominent */}
-        <ApprovalPanel
-          incidentId={id}
-          currentStatus={incident.status}
-          existingApproval={latestApproval}
-        />
+        {/* Approval Panel — only shown for non-failed incidents */}
+        {incident.status !== "ANALYSIS_FAILED" && (
+          <ApprovalPanel
+            incidentId={id}
+            currentStatus={incident.status}
+            existingApproval={latestApproval}
+          />
+        )}
 
         {/* Audit Timeline */}
         {incident.auditLogs?.length > 0 && (

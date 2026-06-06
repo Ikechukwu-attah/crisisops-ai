@@ -185,11 +185,17 @@ export async function analyzeIncident(input: AnalyzeIncidentInput) {
     if (result.success && result.data) summaryData = result.data;
   }
 
+  // Determine final status — failed if triage (the critical first agent) failed,
+  // since all downstream agents depend on its output.
+  const succeededAgents = [triageData, verificationData, duplicateData, resourceData, commsData, riskData, summaryData]
+    .filter(Boolean).length;
+  const finalStatus = triageData === null ? "ANALYSIS_FAILED" : "PENDING_APPROVAL";
+
   // Update incident with triage data and status
   await prisma.incident.update({
     where: { id: incident.id },
     data: {
-      status: "PENDING_APPROVAL",
+      status: finalStatus,
       incidentType: triageData?.incidentType ?? input.incidentType,
       severity: triageData?.severity,
       urgency: triageData?.urgency,
@@ -200,7 +206,8 @@ export async function analyzeIncident(input: AnalyzeIncidentInput) {
 
   await writeAuditLog(incident.id, "analysis_complete", {
     agentsRun: Object.keys(agentOutputs),
-    finalStatus: "PENDING_APPROVAL",
+    succeededAgents,
+    finalStatus,
   });
 
   const fullIncident = await prisma.incident.findUnique({

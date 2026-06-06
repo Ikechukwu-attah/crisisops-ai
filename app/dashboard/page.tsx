@@ -26,6 +26,7 @@ const STATUS_STYLES: Record<string, string> = {
   APPROVED_WITH_EDITS: "bg-emerald-900 text-emerald-300",
   REJECTED: "bg-red-900 text-red-300",
   CLOSED: "bg-slate-700 text-slate-400",
+  ANALYSIS_FAILED: "bg-red-950 text-red-400 border border-red-800",
 };
 
 export default function DashboardPage() {
