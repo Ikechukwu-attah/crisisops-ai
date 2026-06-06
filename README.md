@@ -289,6 +289,73 @@ Before submitting or demonstrating:
 
 ---
 
+## Alibaba Cloud Deployment
+
+CrisisOps AI is deployed as a single Docker container on Alibaba Cloud ECS.
+The full Next.js application (frontend + API routes + agent orchestrator) runs in one container.
+
+### Architecture
+
+```
+[Browser]
+    │  HTTP / HTTPS
+    ▼
+[Alibaba Cloud ECS]
+    │  Nginx reverse proxy  (port 80 → 3000)
+    ▼
+[Docker Container: crisisops-ai]
+    │  Next.js App Router + API Routes
+    │  7-Agent Orchestrator
+    ▼
+[Qwen Cloud API]
+    dashscope-intl.aliyuncs.com/compatible-mode/v1
+    qwen-max (agents) · qwen-plus (utilities)
+    ▼
+[Prisma ORM + SQLite]
+    Docker volume: /app/data/production.db
+    ▼
+[Audit Log + Human Approval Workflow]
+```
+
+### Quick Deploy
+
+```bash
+# 1. Clone on the ECS instance
+git clone https://github.com/Ikechukwu-attah/crisisops-ai.git
+cd crisisops-ai
+
+# 2. Set environment variables
+export QWEN_API_KEY=your_key_here
+
+# 3. Build and start
+docker compose --env-file .env.production up -d --build
+
+# 4. Verify
+curl http://localhost:3000/api/health
+```
+
+Expected health response:
+
+```json
+{
+  "status": "ok",
+  "service": "crisisops-ai",
+  "host": "alibaba-cloud-ready",
+  "qwenConfigured": true,
+  "timestamp": "..."
+}
+```
+
+### Full Deployment Guide
+
+See [`docs/ALIBABA_CLOUD_DEPLOYMENT.md`](./docs/ALIBABA_CLOUD_DEPLOYMENT.md) for the step-by-step guide.
+
+### Deployment Proof
+
+See [`docs/DEPLOYMENT_PROOF.md`](./docs/DEPLOYMENT_PROOF.md) for the list of screenshots and evidence required for hackathon submission.
+
+---
+
 ## Future Improvements
 
 1. PostgreSQL production database
