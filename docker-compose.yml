@@ -1,0 +1,33 @@
+version: "3.9"
+
+services:
+  crisisops-ai:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: crisisops-ai:latest
+    container_name: crisisops-ai
+    restart: unless-stopped
+    ports:
+      - "3000:3000"
+    environment:
+      NODE_ENV: production
+      # Qwen Cloud — supply via .env or shell environment; never hardcode here
+      QWEN_API_KEY: ${QWEN_API_KEY}
+      QWEN_BASE_URL: ${QWEN_BASE_URL:-https://dashscope-intl.aliyuncs.com/compatible-mode/v1}
+      QWEN_MODEL: ${QWEN_MODEL:-qwen-plus}
+      QWEN_AGENT_MODEL: ${QWEN_AGENT_MODEL:-qwen-max}
+      # SQLite stored on the named volume below
+      DATABASE_URL: file:/app/data/production.db
+    volumes:
+      - crisisops_data:/app/data
+    healthcheck:
+      test: ["CMD", "wget", "-qO-", "http://localhost:3000/api/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 15s
+
+volumes:
+  crisisops_data:
+    driver: local
