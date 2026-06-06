@@ -40,7 +40,7 @@ export default function Sidebar() {
         })}
       </nav>
       <div className="p-4 border-t border-slate-700">
-        <div className="text-slate-600 text-xs">Track 4: Autopilot Agent</div>
+        <div className="text-slate-600 text-xs">Track 3: Agent Society</div>
         <div className="text-slate-600 text-xs">Powered by Qwen Cloud</div>
       </div>
     </aside>

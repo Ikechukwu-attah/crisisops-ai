@@ -59,7 +59,7 @@ docker compose ps
 The landing page shows:
 - "Powered by Qwen Cloud" section
 - The Qwen model names (`qwen-max`, `qwen-plus`)
-- The Track 4 Autopilot Agent badge
+- The Track 3 Agent Society badge
 
 ---
 

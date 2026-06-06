@@ -20,7 +20,7 @@ export default function LandingPage() {
           <div className="w-8 h-8 rounded-lg bg-red-600 flex items-center justify-center text-sm font-black tracking-tight">C</div>
           <span className="text-white font-bold text-base tracking-tight">CrisisOps <span className="text-red-400">AI</span></span>
           <span className="hidden sm:inline-flex ml-2 items-center gap-1.5 bg-red-950 border border-red-800/60 text-red-300 text-xs font-semibold px-2.5 py-1 rounded-full">
-            Track 4 · Autopilot Agent
+            Track 3 · Agent Society
           </span>
         </div>
         <div className="flex items-center gap-5">
@@ -42,7 +42,7 @@ export default function LandingPage() {
                 Qwen Cloud Hackathon 2026
               </span>
               <span className="inline-flex items-center gap-1.5 bg-red-950 border border-red-800/60 text-red-300 text-xs font-semibold px-3 py-1.5 rounded-full">
-                Track 4 · Autopilot Agent
+                Track 3 · Agent Society
               </span>
             </div>
             <h1 className="text-5xl lg:text-6xl font-black leading-[1.05] tracking-tight mb-6">
@@ -512,7 +512,7 @@ export default function LandingPage() {
             <span className="text-white font-bold">CrisisOps <span className="text-red-400">AI</span></span>
           </div>
           <div className="text-slate-500 text-sm text-center">
-            Qwen Cloud Global AI Hackathon 2026 · Track 4: Autopilot Agent
+            Qwen Cloud Global AI Hackathon 2026 · Track 3: Agent Society
           </div>
           <div className="text-slate-600 text-xs text-right">
             Next.js · TypeScript · Tailwind · Prisma · Qwen Cloud · MIT

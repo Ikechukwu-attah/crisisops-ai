@@ -10,8 +10,8 @@ It is built for low-resource cities, campuses, NGOs, and emergency teams where r
 
 ## Hackathon Track
 
-**Primary Track:** Track 4 — Autopilot Agent
-**Secondary Fit:** Track 3 — Agent Society · Track 1 — MemoryAgent
+**Primary Track:** Track 3 — Agent Society
+**Secondary Fit:** Track 4 — Autopilot Agent · Track 1 — MemoryAgent
 
 ---
 
@@ -375,4 +375,4 @@ See [`docs/DEPLOYMENT_PROOF.md`](./docs/DEPLOYMENT_PROOF.md) for the list of scr
 
 MIT — see [LICENSE](./LICENSE)
 
-Built for the Qwen Cloud Global AI Hackathon — Track 4: Autopilot Agent
+Built for the Qwen Cloud Global AI Hackathon — Track 3: Agent Society
