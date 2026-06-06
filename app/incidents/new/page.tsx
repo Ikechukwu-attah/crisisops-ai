@@ -7,51 +7,59 @@ import Header from "@/components/layout/Header";
 
 const DEMO_SCENARIOS = [
   {
-    label: "Flood + Vulnerable People",
-    color: "bg-blue-900 border-blue-700 text-blue-200 hover:bg-blue-800",
+    label: "Flooding + Trapped Residents",
+    tag: "Tests: triage · missing info · memory · resource planning",
+    color: "bg-blue-950 border-blue-700 text-blue-200 hover:border-blue-500",
+    icon: "~",
     data: {
       rawReport:
-        "Heavy flooding near Main Street market. Power is out. A resident says elderly people are trapped inside a nearby apartment building. Road access is blocked by water.",
+        "Flooding around Main Street. Water is entering the ground floor of an apartment building. Power is out. Road access is blocked. Elderly residents may be trapped inside.",
       reporterName: "Field Officer A",
       reporterContact: "radio-unit-4",
-      locationRaw: "Main Street market area",
+      locationRaw: "Main Street apartment area",
       incidentType: "flood",
     },
   },
   {
-    label: "Conflicting Fire Report",
-    color: "bg-orange-900 border-orange-700 text-orange-200 hover:bg-orange-800",
+    label: "Conflicting Fire / Gas Leak",
+    tag: "Tests: contradiction detection · verification risk · unverified claims",
+    color: "bg-orange-950 border-orange-700 text-orange-200 hover:border-orange-500",
+    icon: "!",
     data: {
       rawReport:
-        "Someone reported smoke near the old warehouse, but another message says it may only be dust from construction. No flames seen. People are gathering nearby.",
+        "People are reporting a fire near Central Market, but another caller says it may be a gas leak. Smoke is visible. The exact location is unclear, possibly near the east entrance.",
       reporterName: "Dispatch Center",
       reporterContact: "dispatch-01",
-      locationRaw: "Old warehouse district",
+      locationRaw: "Central Market east entrance",
       incidentType: "fire",
     },
   },
   {
-    label: "Duplicate Utility Outage",
-    color: "bg-yellow-900 border-yellow-700 text-yellow-200 hover:bg-yellow-800",
+    label: "Duplicate Flooding Report",
+    tag: "Tests: duplicate detection · merge recommendation · location overlap",
+    color: "bg-yellow-950 border-yellow-700 text-yellow-200 hover:border-yellow-500",
+    icon: "=",
     data: {
       rawReport:
-        "Lights are out again around East Junction. Same transformer area as yesterday. Traffic signals are down and cars are stuck.",
-      reporterName: "Traffic Control",
-      reporterContact: "traffic-control-2",
-      locationRaw: "East Junction",
-      incidentType: "utility",
+        "Another message came in about flooding near Main Street. Caller says water is rising fast and people are still inside the same apartment building.",
+      reporterName: "Community Hotline",
+      reporterContact: "hotline-dispatch",
+      locationRaw: "Main Street",
+      incidentType: "flood",
     },
   },
   {
-    label: "Medical Event — Public Event",
-    color: "bg-red-900 border-red-700 text-red-200 hover:bg-red-800",
+    label: "Rumor / Misinformation Risk",
+    tag: "Tests: risk flagging · conservative alert · approval enforcement",
+    color: "bg-red-950 border-red-700 text-red-200 hover:border-red-500",
+    icon: "?",
     data: {
       rawReport:
-        "At the city sports field, several people feel dizzy during an outdoor event. It is very hot. Water supplies are low. No confirmed severe injuries yet.",
-      reporterName: "Event Security",
-      reporterContact: "event-security-1",
-      locationRaw: "City sports field",
-      incidentType: "medical",
+        "There are rumors online that a bridge has collapsed near Riverside Road. Traffic is stopped, but there is no official confirmation yet.",
+      reporterName: "Social Media Monitor",
+      reporterContact: "monitor-team",
+      locationRaw: "Riverside Road bridge",
+      incidentType: "infrastructure",
     },
   },
 ];
@@ -97,19 +105,28 @@ export default function NewIncidentPage() {
     <AppShell>
       <Header title="New Incident" subtitle="Submit a raw incident report for multi-agent analysis" />
       <div className="p-6 max-w-3xl mx-auto">
-        {/* Demo scenarios */}
-        <div className="mb-6">
-          <div className="text-slate-400 text-xs font-semibold uppercase tracking-wider mb-3">
-            Demo Scenarios — Click to fill
+
+        {/* Demo scenario section */}
+        <div className="mb-6 bg-slate-800 border border-slate-700 rounded-xl p-5">
+          <div className="flex items-center justify-between mb-1">
+            <div className="text-white text-sm font-semibold">Demo Scenarios</div>
+            <span className="bg-blue-900 text-blue-300 text-xs px-2 py-0.5 rounded font-medium">Click to fill</span>
           </div>
-          <div className="grid grid-cols-2 gap-2">
+          <p className="text-slate-500 text-xs mb-4">
+            Demo scenarios are designed to test triage, verification, duplicate detection, memory, risk review, and human approval.
+          </p>
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
             {DEMO_SCENARIOS.map((s) => (
               <button
                 key={s.label}
                 onClick={() => fillScenario(s)}
-                className={`text-left px-4 py-3 rounded-lg border text-sm font-medium transition-colors ${s.color}`}
+                className={`text-left px-4 py-3 rounded-lg border transition-colors ${s.color}`}
               >
-                {s.label}
+                <div className="flex items-center gap-2 mb-1">
+                  <span className="text-base font-black w-5">{s.icon}</span>
+                  <span className="text-sm font-semibold">{s.label}</span>
+                </div>
+                <div className="text-xs opacity-60 pl-7">{s.tag}</div>
               </button>
             ))}
           </div>
@@ -123,7 +140,7 @@ export default function NewIncidentPage() {
             <textarea
               className="w-full bg-slate-800 border border-slate-700 rounded-xl px-4 py-3 text-slate-200 text-sm resize-none focus:outline-none focus:border-blue-500 leading-relaxed"
               rows={6}
-              placeholder="Paste or type the raw incident report here. Include any details you have, even if incomplete..."
+              placeholder="Paste or type the raw incident report here. Include any details you have, even if incomplete or contradictory..."
               value={form.rawReport}
               onChange={(e) => setForm((f) => ({ ...f, rawReport: e.target.value }))}
               required
@@ -200,7 +217,7 @@ export default function NewIncidentPage() {
             {loading ? (
               <span className="flex items-center justify-center gap-2">
                 <span className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin" />
-                Agents are analyzing your report...
+                Agents analyzing report...
               </span>
             ) : (
               "Run Agent Analysis"
@@ -209,17 +226,31 @@ export default function NewIncidentPage() {
         </form>
 
         {loading && (
-          <div className="mt-6 bg-slate-800 border border-slate-700 rounded-xl p-5">
-            <div className="text-slate-400 text-sm font-semibold mb-3">Agent Pipeline Running...</div>
-            <div className="space-y-2">
-              {["Triage Agent", "Verification Agent", "Duplicate Detection", "Resource Planner", "Communications Agent", "Risk & Safety Agent", "Decision Summary"].map(
-                (agent) => (
-                  <div key={agent} className="flex items-center gap-2 text-sm text-slate-500">
-                    <span className="w-2 h-2 rounded-full bg-blue-500 animate-pulse" />
-                    {agent}
-                  </div>
-                )
-              )}
+          <div className="mt-5 bg-slate-800 border border-slate-700 rounded-xl p-5">
+            <div className="flex items-center gap-2 mb-4">
+              <span className="w-2 h-2 rounded-full bg-blue-500 animate-pulse" />
+              <span className="text-slate-300 text-sm font-semibold">Qwen Cloud Agent Pipeline Running</span>
+            </div>
+            <div className="space-y-2.5">
+              {[
+                { num: "01", name: "Triage Agent" },
+                { num: "02", name: "Verification Agent" },
+                { num: "03", name: "Duplicate Detection Agent" },
+                { num: "04", name: "Resource Planner Agent" },
+                { num: "05", name: "Communications Agent" },
+                { num: "06", name: "Risk & Safety Agent" },
+                { num: "07", name: "Decision Summary Agent" },
+              ].map((agent) => (
+                <div key={agent.num} className="flex items-center gap-3 text-sm">
+                  <span className="font-mono text-slate-600 text-xs w-5">{agent.num}</span>
+                  <span className="w-1.5 h-1.5 rounded-full bg-blue-500 animate-pulse shrink-0" />
+                  <span className="text-slate-400">{agent.name}</span>
+                  <span className="text-slate-600 text-xs ml-auto">qwen-max</span>
+                </div>
+              ))}
+            </div>
+            <div className="mt-4 pt-3 border-t border-slate-700 text-xs text-slate-600">
+              Each agent validates output with Zod · Invalid JSON is retried with a repair prompt
             </div>
           </div>
         )}
