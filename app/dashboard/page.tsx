@@ -55,7 +55,14 @@ export default function DashboardPage() {
 
   return (
     <AppShell>
-      <Header title="Incident Dashboard" subtitle={`${incidents.length} total incidents`} />
+      <Header
+        title="Incident Dashboard"
+        subtitle={
+          filterSeverity || filterType || filterStatus
+            ? `${filtered.length} of ${incidents.length} incidents`
+            : `${incidents.length} total incidents`
+        }
+      />
       <div className="p-6">
         {/* Filters */}
         <div className="flex flex-wrap gap-3 mb-6">
@@ -142,9 +149,9 @@ export default function DashboardPage() {
                     <tr key={inc.id} className={`border-b border-slate-700/50 hover:bg-slate-750 ${i % 2 === 0 ? "" : "bg-slate-800/50"}`}>
                       <td className="px-4 py-3 font-mono text-slate-500 text-xs">{inc.id.slice(0, 10)}</td>
                       <td className="px-4 py-3 text-slate-200 max-w-[200px] truncate">
-                        {inc.title ?? "—"}
+                        {inc.title ?? <span className="text-slate-500 italic">Analysis failed</span>}
                       </td>
-                      <td className="px-4 py-3 text-slate-400 capitalize">{inc.incidentType ?? "—"}</td>
+                      <td className="px-4 py-3 text-slate-400 capitalize">{inc.incidentType ?? <span className="text-slate-600">—</span>}</td>
                       <td className="px-4 py-3">
                         {inc.severity ? <SeverityBadge severity={inc.severity} size="sm" /> : <span className="text-slate-600">—</span>}
                       </td>

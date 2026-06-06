@@ -82,7 +82,10 @@ export default function NewIncidentPage() {
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
-    if (!form.rawReport.trim()) return;
+    if (!form.rawReport.trim()) {
+      setError("Report text is required. Paste or type the incident report before running analysis.");
+      return;
+    }
     setLoading(true);
     setError("");
 
@@ -211,7 +214,7 @@ export default function NewIncidentPage() {
 
           <button
             type="submit"
-            disabled={loading || !form.rawReport.trim()}
+            disabled={loading}
             className="w-full py-4 bg-red-600 hover:bg-red-500 disabled:opacity-50 disabled:cursor-not-allowed text-white font-semibold text-base rounded-xl transition-colors"
           >
             {loading ? (

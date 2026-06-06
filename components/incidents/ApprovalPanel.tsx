@@ -91,6 +91,10 @@ export default function ApprovalPanel({ incidentId, currentStatus, existingAppro
 
   async function handleSubmit() {
     if (!decision) return;
+    if (!operatorName.trim()) {
+      setError("Operator name is required for audit compliance.");
+      return;
+    }
     setSubmitting(true);
     setError("");
 
@@ -166,7 +170,7 @@ export default function ApprovalPanel({ incidentId, currentStatus, existingAppro
       <div className="grid grid-cols-2 gap-3 mb-5">
         <div>
           <label className="block text-slate-400 text-xs font-semibold uppercase tracking-wider mb-1">
-            Operator Name
+            Operator Name <span className="text-red-400 normal-case">*</span>
           </label>
           <input
             type="text"
@@ -194,7 +198,7 @@ export default function ApprovalPanel({ incidentId, currentStatus, existingAppro
 
       <button
         onClick={handleSubmit}
-        disabled={!decision || submitting}
+        disabled={!decision || !operatorName.trim() || submitting}
         className="w-full py-3.5 rounded-xl font-semibold text-sm transition-all disabled:opacity-50 disabled:cursor-not-allowed bg-red-600 hover:bg-red-500 text-white"
       >
         {submitting
